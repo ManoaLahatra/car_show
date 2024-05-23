@@ -20,9 +20,8 @@ public class Images {
     @Column(name = "url", nullable = false)
     private String url;
 
-    /*
-     * TODO: Foreign key:
-     *  - product_id references car(car_id)
-     */
+    @ManyToOne
+    @JoinColumn(name = "car_id")
+    private Car car;
 
 }

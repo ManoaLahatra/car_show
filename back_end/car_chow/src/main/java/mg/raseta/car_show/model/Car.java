@@ -38,11 +38,16 @@ public class Car {
     @Column(name = "status", nullable = false)
     private boolean status;
 
-    /*
-     * TODO: Foreign key:
-     *  - brand
-     *  - motor_type
-     *  - type
-     */
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
+
+    @ManyToOne
+    @JoinColumn(name = "car_type_id")
+    private CarTypes carTypes;
+
+    @ManyToOne
+    @JoinColumn(name = "motor_type_id")
+    private MotorTypes motorTypes;
 
 }

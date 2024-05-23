@@ -39,6 +39,11 @@ public class Appointment {
     private LocalDate appointmentDate;
 
     @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "car_id")
+    private Car car;
 
 }
