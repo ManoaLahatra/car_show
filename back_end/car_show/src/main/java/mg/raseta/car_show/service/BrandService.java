@@ -11,5 +11,5 @@ public interface BrandService {
     Optional<Brand> findBrandByBrandId(int brandId);
     Page<Brand> findBrandByBrandName(String brandName, int page, int limit);
     Brand updateBrand(int brandId, Brand brand);
-    boolean deleteBrand(int brandId);
+    void deleteBrand(int brandId);
 }

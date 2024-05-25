@@ -50,11 +50,10 @@ public class BrandServiceImplementation implements BrandService {
     }
 
     @Override
-    public boolean deleteBrand(int brandId) {
+    public void deleteBrand(int brandId) {
         Optional<Brand> brand = brandRepository.findById(brandId);
         if (brand.isPresent()) {
             brandRepository.delete(brand.get());
-            return true;
         } else {
             throw new RuntimeException("Brand with brandId : " + brandId + " not found.");
         }
