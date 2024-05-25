@@ -28,6 +28,17 @@ public class BrandServiceImplementation implements BrandService {
     }
 
     @Override
+    public Optional<Brand> findBrandByBrandId(int brandId) {
+        return brandRepository.findById(brandId);
+    }
+
+    @Override
+    public Page<Brand> findBrandByBrandName(String brandName, int page, int limit) {
+        Pageable pageable = PageRequest.of(page, limit);
+        return brandRepository.findBrandByName(brandName, pageable);
+    }
+
+    @Override
     public Brand updateBrand(int brandId, Brand brand) {
         return brandRepository.findById(brandId)
                 .map(b -> {
