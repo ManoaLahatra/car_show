@@ -15,5 +15,10 @@ public class GenericModelSpecification<T> {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get(fieldName).get("id"), id);
     }
+
+    public Specification<T> hasBoolean(Boolean status, String fieldName) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get(fieldName), status);
+    }
     
 }
