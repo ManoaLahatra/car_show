@@ -3,12 +3,14 @@ package mg.raseta.car_show.controller;
 import mg.raseta.car_show.model.Car;
 import mg.raseta.car_show.service.implementations.CarService;
 import mg.raseta.car_show.specification.CarSpecification;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 public class CarController {
@@ -16,7 +18,7 @@ public class CarController {
     private CarService carService;
 
     @GetMapping("/cars")
-    public List<Car> searchCars(
+    public Page<Car> searchCars(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String model,
             @RequestParam(required = false) Integer price,
@@ -26,7 +28,9 @@ public class CarController {
             @RequestParam(required = false) Boolean status,
             @RequestParam(required = false) Integer brandId,
             @RequestParam(required = false) Integer carTypeId,
-            @RequestParam(required = false) Integer motorTypeId
+            @RequestParam(required = false) Integer motorTypeId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
     ) {
         Specification<Car> spec = Specification.where(null);
 
@@ -61,7 +65,8 @@ public class CarController {
             spec = spec.and(CarSpecification.hasMotorTypeId(motorTypeId));
         }
 
-        return carService.searchCars(spec);
+        Pageable pageable = PageRequest.of(page, size);
+        return carService.searchCars(spec, pageable);
     }
 
 }
