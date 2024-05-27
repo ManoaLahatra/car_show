@@ -1,8 +1,13 @@
 package mg.raseta.car_show.controller;
 
+import lombok.AllArgsConstructor;
 import mg.raseta.car_show.model.Brand;
-import mg.raseta.car_show.service.implementations.BrandServiceImplementation;
+import mg.raseta.car_show.service.implementations.BrandService;
+import mg.raseta.car_show.specification.GenericModelSpecification;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,43 +15,52 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/brand")
+@AllArgsConstructor
 public class BrandController {
 
-    private BrandServiceImplementation brandService;
+    private final BrandService brandService;
+    private final GenericModelSpecification<Brand> genericModelSpecification;
 
     @PostMapping
     public ResponseEntity<Brand> createBrand(@RequestBody Brand brand) {
-        Brand createdBrand = brandService.createBrand(brand);
+        Brand createdBrand = brandService.save(brand);
         return ResponseEntity.ok(createdBrand);
     }
 
     @GetMapping
-    public ResponseEntity<Page<Brand>> getAllBrands(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "6") int size) {
-        Page<Brand> brands = brandService.findAllBrand(page, size);
-        return ResponseEntity.ok(brands);
-    }
+    public ResponseEntity<Page<Brand>> searchBrand(
+            @RequestParam(required = false) Integer brandId,
+            @RequestParam(required = false) String name,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "6") int limit
+    )
+    {
+        Specification<Brand> specification = Specification.where(null);
 
-    @GetMapping("/search/id")
-    public ResponseEntity<Optional<Brand>> getBrandById(@RequestParam int brandId) {
-        Optional<Brand> brand = brandService.findBrandByBrandId(brandId);
-        return ResponseEntity.ok(brand);
-    }
+        if (brandId != null) {
+            specification = specification.and(genericModelSpecification.hasInteger(brandId, "brandId"));
+        }
+        if (name != null) {
+            specification = specification.and(genericModelSpecification.hasString(name, "name"));
+        }
 
-    @GetMapping("/search/name")
-    public ResponseEntity<Page<Brand>> getBrandsByName(@RequestParam String name, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "6") int size) {
-        Page<Brand> brands = brandService.findBrandByBrandName(name, page, size);
-        return ResponseEntity.ok(brands);
+        Pageable pageable = PageRequest.of(page, limit);
+        return ResponseEntity.ok(brandService.searchBrand(specification, pageable));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Brand> updateBrand(@PathVariable int id, @RequestBody Brand brand) {
-        Brand updatedBrand = brandService.updateBrand(id, brand);
+    public ResponseEntity<Brand> updateBrand(
+            @PathVariable int id,
+            @RequestBody Brand brand
+    )
+    {
+        Brand updatedBrand = brandService.update(id, brand);
         return ResponseEntity.ok(updatedBrand);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBrand(@PathVariable int id) {
-        brandService.deleteBrand(id);
+        brandService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }
