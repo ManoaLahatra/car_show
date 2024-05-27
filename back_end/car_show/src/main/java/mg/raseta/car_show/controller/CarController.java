@@ -3,7 +3,6 @@ package mg.raseta.car_show.controller;
 import mg.raseta.car_show.model.Car;
 import mg.raseta.car_show.service.implementations.CarService;
 import mg.raseta.car_show.specification.CarSpecification;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
