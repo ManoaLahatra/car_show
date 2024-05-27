@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @AllArgsConstructor
 @Service
-public class CarTypesServiceImplementation implements CarTypesService {
+public class CarTypesService implements CarTypesService {
 
     private final CarTypesRepository carTypesRepository;
 
