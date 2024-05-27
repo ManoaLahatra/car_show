@@ -25,7 +25,7 @@ public class MotorTypesController {
         return ResponseEntity.ok(createMotorType);
     }
 
-    @GetMapping("/search")
+    @GetMapping
     public ResponseEntity<Page<MotorTypes>> searchMotorType(
             @RequestParam(required = false) Integer motorTypeId,
             @RequestParam(required = false) String name,
