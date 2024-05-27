@@ -1,8 +1,9 @@
-package mg.raseta.car_show.service;
+package mg.raseta.car_show.service.implementations;
 
 import lombok.AllArgsConstructor;
 import mg.raseta.car_show.model.MotorTypes;
 import mg.raseta.car_show.repository.MotorTypesRepository;
+import mg.raseta.car_show.service.interfaces.MotorTypesService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

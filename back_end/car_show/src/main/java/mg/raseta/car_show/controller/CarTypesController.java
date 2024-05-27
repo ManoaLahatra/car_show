@@ -1,7 +1,7 @@
 package mg.raseta.car_show.controller;
 
 import mg.raseta.car_show.model.CarTypes;
-import mg.raseta.car_show.service.CarTypesServiceImplementation;
+import mg.raseta.car_show.service.implementations.CarTypesServiceImplementation;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

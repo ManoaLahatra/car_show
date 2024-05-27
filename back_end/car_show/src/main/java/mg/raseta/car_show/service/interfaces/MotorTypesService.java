@@ -1,4 +1,4 @@
-package mg.raseta.car_show.service;
+package mg.raseta.car_show.service.interfaces;
 
 import mg.raseta.car_show.model.MotorTypes;
 import org.springframework.data.domain.Page;

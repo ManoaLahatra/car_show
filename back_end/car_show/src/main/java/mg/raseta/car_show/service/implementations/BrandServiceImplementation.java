@@ -1,8 +1,9 @@
-package mg.raseta.car_show.service;
+package mg.raseta.car_show.service.implementations;
 
 import lombok.AllArgsConstructor;
 import mg.raseta.car_show.model.Brand;
 import mg.raseta.car_show.repository.BrandRepository;
+import mg.raseta.car_show.service.interfaces.BrandService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
