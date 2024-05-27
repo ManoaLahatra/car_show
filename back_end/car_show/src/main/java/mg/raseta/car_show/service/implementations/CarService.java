@@ -2,14 +2,14 @@ package mg.raseta.car_show.service.implementations;
 
 import mg.raseta.car_show.model.Car;
 import mg.raseta.car_show.repository.CarRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import mg.raseta.car_show.service.GenericService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CarService {
+public class CarService extends GenericService<Car, Integer> {
 
     private CarRepository carRepository;
 
