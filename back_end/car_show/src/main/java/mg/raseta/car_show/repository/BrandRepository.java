@@ -8,6 +8,4 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BrandRepository extends JpaRepository<Brand, Integer>, CrudRepository<Brand, Integer> {
-    Page<Brand> findBrandByName(String brandName, Pageable pageable);
-}
+public interface BrandRepository extends GenericRepository<Brand, Integer> {}
