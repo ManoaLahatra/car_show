@@ -3,6 +3,8 @@ package mg.raseta.car_show.specification;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 public class GenericModelSpecification<T> {
     
@@ -19,6 +21,11 @@ public class GenericModelSpecification<T> {
     public Specification<T> hasBoolean(Boolean status, String fieldName) {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get(fieldName), status);
+    }
+
+    public Specification<T> hasLocalDate(LocalDate localDate, String fieldName) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get(fieldName), localDate);
     }
     
 }
