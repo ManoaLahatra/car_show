@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/motorType")
+@RequestMapping("/car_show/motorType")
 @AllArgsConstructor
 public class MotorTypesController {
 

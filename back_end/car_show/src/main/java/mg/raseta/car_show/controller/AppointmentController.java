@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/appointment")
+@RequestMapping("/car_show/appointment")
 @AllArgsConstructor
 public class AppointmentController {
 

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/brand")
+@RequestMapping("/car_show/brand")
 @AllArgsConstructor
 public class BrandController {
 
@@ -63,4 +63,5 @@ public class BrandController {
         brandService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
 }

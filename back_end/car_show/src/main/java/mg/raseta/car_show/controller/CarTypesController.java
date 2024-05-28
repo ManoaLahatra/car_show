@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/carType")
+@RequestMapping("/car_show/carType")
 @AllArgsConstructor
 public class CarTypesController {
 
