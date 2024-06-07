@@ -8,8 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/car_show/image")
@@ -26,10 +29,11 @@ public class ImagesController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Images>> searchImage(
+    public ResponseEntity<List<Images>> searchImage(
             @RequestParam(required = false) Integer imageId,
             @RequestParam(required = false) String url,
             @RequestParam(required = false) Integer carId,
+            @RequestParam(required = false) Integer brandId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "6") int limit
     )
@@ -45,9 +49,17 @@ public class ImagesController {
         if (carId != null) {
             specification = specification.and(genericModelSpecification.hasInteger(carId, "carId"));
         }
+        if (brandId != null) {
+            specification = specification.and(genericModelSpecification.hasInteger(brandId, "brandId"));
+        }
 
         Pageable pageable = PageRequest.of(page, limit);
-        return ResponseEntity.ok(imagesService.searchImages(specification, pageable));
+        Page<Images> imagesPage = imagesService.searchImages(specification, pageable);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Total-Count", Long.toString(imagesPage.getTotalElements()));
+
+        return ResponseEntity.ok().headers(headers).body(imagesPage.getContent());
     }
 
     @PutMapping("/{id}")

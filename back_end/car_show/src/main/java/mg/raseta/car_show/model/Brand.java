@@ -20,4 +20,7 @@ public class Brand {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+    @Column(name = "logo_url")
+    private String logoUrl;
+
 }

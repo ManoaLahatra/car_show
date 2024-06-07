@@ -8,8 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/car_show/carType")
@@ -26,7 +29,7 @@ public class CarTypesController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<CarTypes>> searchCarType(
+    public ResponseEntity<List<CarTypes>> searchCarType(
             @RequestParam(required = false) Integer carTypeId,
             @RequestParam(required = false) String name,
             @RequestParam(defaultValue = "0") int page,
@@ -43,7 +46,12 @@ public class CarTypesController {
         }
 
         Pageable pageable = PageRequest.of(page, limit);
-        return ResponseEntity.ok(carTypesService.searchCarTypes(specification, pageable));
+        Page<CarTypes> carTypesPage = carTypesService.searchCarTypes(specification, pageable);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Total-Count", Long.toString(carTypesPage.getTotalElements()));
+
+        return ResponseEntity.ok().headers(headers).body(carTypesPage.getContent());
     }
 
     @PutMapping("/{id}")

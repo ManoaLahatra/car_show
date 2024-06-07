@@ -8,12 +8,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/car_show/car")
 @AllArgsConstructor
+@CrossOrigin
 public class CarController {
 
     private final CarService carService;
@@ -26,17 +31,19 @@ public class CarController {
     }
 
     @GetMapping
-    public Page<Car> searchCars(
+    public ResponseEntity<List<Car>> filterCar(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String model,
-            @RequestParam(required = false) Integer price,
+            @RequestParam(required = false) BigDecimal price,
             @RequestParam(required = false) String color,
             @RequestParam(required = false) Integer power,
             @RequestParam(required = false) Integer placeNumber,
             @RequestParam(required = false) Boolean status,
-            @RequestParam(required = false) Integer brandId,
-            @RequestParam(required = false) Integer carTypeId,
-            @RequestParam(required = false) Integer motorTypeId,
+            @RequestParam(required = false) String brandId,
+            @RequestParam(required = false) String carTypeId,
+            @RequestParam(required = false) String motorTypeId,
+            @RequestParam(required = false) BigDecimal minCost,
+            @RequestParam(required = false) BigDecimal maxCost,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
@@ -49,7 +56,7 @@ public class CarController {
             spec = spec.and(genericModelSpecification.hasString(model, "model"));
         }
         if (price != null) {
-            spec = spec.and(genericModelSpecification.hasInteger(price, "price"));
+            spec = spec.and(genericModelSpecification.hasBigDecimal(price, "price"));
         }
         if (color != null) {
             spec = spec.and(genericModelSpecification.hasString(color, "color"));
@@ -64,17 +71,22 @@ public class CarController {
             spec = spec.and(genericModelSpecification.hasBoolean(status, "status"));
         }
         if (brandId != null) {
-            spec = spec.and(genericModelSpecification.hasInteger(brandId, "brandId"));
+            spec = spec.and(genericModelSpecification.hasInteger(Integer.valueOf(brandId), "brandId"));
         }
         if (carTypeId != null) {
-            spec = spec.and(genericModelSpecification.hasInteger(carTypeId, "carTypeId"));
+            spec = spec.and(genericModelSpecification.hasInteger(Integer.valueOf(carTypeId), "carTypeId"));
         }
         if (motorTypeId != null) {
-            spec = spec.and(genericModelSpecification.hasInteger(motorTypeId, "motorTypeId"));
+            spec = spec.and(genericModelSpecification.hasInteger(Integer.valueOf(motorTypeId), "motorTypeId"));
         }
 
         Pageable pageable = PageRequest.of(page, size);
-        return carService.searchCars(spec, pageable);
+        Page<Car> carPage = carService.searchCars(spec, brandId, carTypeId, motorTypeId, minCost, maxCost, pageable);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Total-Count", Long.toString(carPage.getTotalElements()));
+
+        return ResponseEntity.ok().headers(headers).body(carPage.getContent());
     }
 
     @PutMapping("/{id}")

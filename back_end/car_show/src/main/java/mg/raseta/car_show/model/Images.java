@@ -1,5 +1,6 @@
 package mg.raseta.car_show.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +23,12 @@ public class Images {
 
     @ManyToOne
     @JoinColumn(name = "car_id")
+    @JsonBackReference
     private Car car;
+
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    @JsonBackReference
+    private Brand brand;
 
 }

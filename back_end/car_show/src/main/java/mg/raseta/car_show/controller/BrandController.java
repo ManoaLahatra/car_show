@@ -8,9 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -28,7 +30,7 @@ public class BrandController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Brand>> searchBrand(
+    public ResponseEntity<List<Brand>> searchBrand(
             @RequestParam(required = false) Integer brandId,
             @RequestParam(required = false) String name,
             @RequestParam(defaultValue = "0") int page,
@@ -45,7 +47,12 @@ public class BrandController {
         }
 
         Pageable pageable = PageRequest.of(page, limit);
-        return ResponseEntity.ok(brandService.searchBrand(specification, pageable));
+        Page<Brand> brandPage = brandService.searchBrand(specification, pageable);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Total-Count", Long.toString(brandPage.getTotalElements()));
+
+        return ResponseEntity.ok().headers(headers).body(brandPage.getContent());
     }
 
     @PutMapping("/{id}")

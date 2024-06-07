@@ -8,10 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -28,7 +29,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<User>> searchUser(
+    public ResponseEntity<List<User>> searchUser(
             @RequestParam(required = false) Integer userId,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String email,
@@ -53,7 +54,12 @@ public class UserController {
         }
 
         Pageable pageable = PageRequest.of(page, limit);
-        return ResponseEntity.ok(userService.searchUser(specification, pageable));
+        Page<User> userPage = userService.searchUser(specification, pageable);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Total-Count", Long.toString(userPage.getTotalElements()));
+
+        return ResponseEntity.ok().headers(headers).body(userPage.getContent());
     }
 
     @PutMapping("/{id}")

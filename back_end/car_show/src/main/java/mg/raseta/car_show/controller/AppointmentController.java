@@ -9,10 +9,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/car_show/appointment")
@@ -29,7 +31,7 @@ public class AppointmentController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Appointment>> searchAppointment(
+    public ResponseEntity<List<Appointment>> searchAppointment(
             @RequestParam(required = false) Integer appointmentId,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String firstName,
@@ -74,7 +76,12 @@ public class AppointmentController {
         }
 
         Pageable pageable = PageRequest.of(page, limit);
-        return ResponseEntity.ok(appointmentService.searchAppointment(specification, pageable));
+        Page<Appointment> appointmentPage = appointmentService.searchAppointment(specification, pageable);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Total-Count", Long.toString(appointmentPage.getTotalElements()));
+
+        return ResponseEntity.ok().headers(headers).body(appointmentPage.getContent());
     }
 
     @PutMapping("/{id}")
