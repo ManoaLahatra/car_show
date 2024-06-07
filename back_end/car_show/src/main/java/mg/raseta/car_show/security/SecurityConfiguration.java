@@ -44,10 +44,15 @@ public class SecurityConfiguration {
                                         .requestMatchers(GET, "/car_show/**").permitAll()
                                         .requestMatchers(POST, "/auth/**").permitAll()
 
-                                        .requestMatchers(GET, "/user/**").hasRole(ADMIN.name())
-                                        .requestMatchers(POST, "/user/**").hasRole(ADMIN.name())
-                                        .requestMatchers(PUT, "/user/**").hasRole(ADMIN.name())
-                                        .requestMatchers(DELETE, "/user/**").hasRole(ADMIN.name())
+//                                        .requestMatchers(GET, "/user/**").hasRole(ADMIN.name())
+//                                        .requestMatchers(POST, "/user/**").hasRole(ADMIN.name())
+//                                        .requestMatchers(PUT, "/user/**").hasRole(ADMIN.name())
+//                                        .requestMatchers(DELETE, "/user/**").hasRole(ADMIN.name())
+
+                                        .requestMatchers(GET, "/user/**").permitAll()
+                                        .requestMatchers(POST, "/user/**").permitAll()
+                                        .requestMatchers(PUT, "/user/**").permitAll()
+                                        .requestMatchers(DELETE, "/user/**").permitAll()
 
                                         .anyRequest().authenticated()
                 )

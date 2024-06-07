@@ -31,11 +31,6 @@ public class AuthenticationController {
         this.userService.createUser(user);
     }
 
-    @PostMapping(path = "activation")
-    public void activation(@RequestBody Map<String, String> activation) {
-        this.userService.activate(activation);
-    }
-
     @PostMapping(path = "login")
     public Map<String, String> login(@RequestBody AuthenticationDto authenticationDto) {
         Authentication authenticate = authenticationManager.authenticate(

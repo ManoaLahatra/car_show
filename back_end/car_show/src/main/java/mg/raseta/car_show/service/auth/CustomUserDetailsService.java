@@ -3,16 +3,12 @@ package mg.raseta.car_show.service.auth;
 import lombok.AllArgsConstructor;
 import mg.raseta.car_show.model.User;
 import mg.raseta.car_show.model.auth.Role;
-import mg.raseta.car_show.model.auth.Validation;
 import mg.raseta.car_show.model.enums.Permission;
 import mg.raseta.car_show.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -21,7 +17,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder;
-    private ValidationService validationService;
 
     public void createUser(User user) {
 
@@ -47,19 +42,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         user.setRole(userRole);
 
         user = this.userRepository.save(user);
-        validationService.save(user);
-    }
-
-    public void activate(Map<String, String> activation) {
-        Validation validation = this.validationService.readAccordingCode(activation.get("code"));
-
-        if (Instant.now().isAfter(validation.getExpiration())) {
-            throw new RuntimeException("Your activation code is expired.");
-        }
-
-        User userActivated = this.userRepository.findById(validation.getUser().getUserId()).orElseThrow(() -> new RuntimeException("User not recognized"));
-        userActivated.setActive(true);
-        this.userRepository.save(userActivated);
     }
 
     @Override

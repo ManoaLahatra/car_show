@@ -33,7 +33,7 @@ public class User implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
-    private boolean isActive;
+    private boolean isActive = true;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Role role;
