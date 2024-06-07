@@ -49,6 +49,11 @@ public class SecurityConfiguration {
 //                                        .requestMatchers(PUT, "/user/**").hasRole(ADMIN.name())
 //                                        .requestMatchers(DELETE, "/user/**").hasRole(ADMIN.name())
 
+                                        .requestMatchers(GET, "/user").permitAll()
+                                        .requestMatchers(POST, "/user").permitAll()
+                                        .requestMatchers(PUT, "/user/").permitAll()
+                                        .requestMatchers(DELETE, "/user").permitAll()
+
                                         .requestMatchers(GET, "/user/**").permitAll()
                                         .requestMatchers(POST, "/user/**").permitAll()
                                         .requestMatchers(PUT, "/user/**").permitAll()
