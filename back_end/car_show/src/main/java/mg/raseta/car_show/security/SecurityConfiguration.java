@@ -42,6 +42,14 @@ public class SecurityConfiguration {
                         authorize ->
                                 authorize
                                         .requestMatchers(GET, "/car_show/**").permitAll()
+                                        .requestMatchers(POST, "/car_show/**").permitAll()
+                                        .requestMatchers(PUT, "/car_show/**").permitAll()
+                                        .requestMatchers(DELETE, "/car_show/**").permitAll()
+
+                                        .requestMatchers(GET, "/car_show/brand/").permitAll()
+                                        .requestMatchers(PUT, "/car_show/brand/").permitAll()
+                                        .requestMatchers(DELETE, "/car_show/brand/").permitAll()
+
                                         .requestMatchers(POST, "/auth/**").permitAll()
 
 //                                        .requestMatchers(GET, "/user/**").hasRole(ADMIN.name())
